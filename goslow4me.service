@@ -1,0 +1,19 @@
+[Unit]
+Description=Go Slow 4 Me API
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=60
+Restart=always
+ExecStartPre=-/usr/bin/docker kill goslow4me
+ExecStartPre=-/usr/bin/docker rm goslow4me
+ExecStartPre=/usr/bin/docker pull royvandewater/goslow4me
+ExecStart=/usr/bin/docker run \
+    --name goslow4me \
+    -e VIRTUAL_HOST=goslow4.me \
+    royvandewater/goslow4me
+
+[Install]
+WantedBy=multi-user.target
+

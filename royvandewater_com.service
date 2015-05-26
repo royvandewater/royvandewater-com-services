@@ -1,0 +1,26 @@
+[Unit]
+Description=royvandewater.com Wordpress
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=60
+Restart=always
+ExecStartPre=-/usr/bin/docker kill royvandewater-com
+ExecStartPre=-/usr/bin/docker rm royvandewater-com
+ExecStartPre=/usr/bin/docker pull wordpress
+ExecStart=/usr/bin/docker run \
+    --name royvandewater-com \
+    --link mysql:mysql \
+    --volume /var/lib/wordpress/plugins:/var/www/html/wp-content/plugins \
+    --volume /var/lib/wordpress/themes:/var/www/html/wp-content/themes \
+    --volume /var/lib/wordpress/upgrade:/var/www/html/wp-content/upgrade \
+    -e VIRTUAL_HOST=royvandewater.com \
+    -e WORDPRESS_DB_USER=royvandewater \
+    -e WORDPRESS_DB_PASSWORD=walktheplank \
+    -e WORDPRESS_DB_NAME=royvandewater_com \
+    wordpress
+
+[Install]
+WantedBy=multi-user.target
+
