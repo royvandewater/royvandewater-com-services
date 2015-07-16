@@ -1,19 +1,18 @@
 [Unit]
 Description=C3PO Group.me Bot
 Requires=docker.service
-After=docker.service
 
 [Service]
-TimeoutStartSec=60
 Restart=always
+TimeoutStopSec=5
 ExecStartPre=-/usr/bin/docker kill c3po
 ExecStartPre=-/usr/bin/docker rm c3po
 ExecStartPre=/usr/bin/docker pull royvandewater/c3po
 ExecStart=/usr/bin/docker run \
     --name c3po \
-    -e VIRTUAL_HOST=c3po.royvandewater.com \
+    --rm \
+    --publish 58637:80 \
     royvandewater/c3po
 
-[Install]
-WantedBy=multi-user.target
-
+[X-fleet]
+X-Conflicts=c3po.service
