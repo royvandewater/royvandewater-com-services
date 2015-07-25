@@ -1,0 +1,17 @@
+[Unit]
+Description=Register for c3po
+BindsTo=c3po.service
+After=c3po.service
+
+[Service]
+EnvironmentFile=/etc/environment
+RemainAfterExit=yes
+ExecStart=/bin/sh -c "/usr/bin/echo 'Updating vulcand' && \
+  /usr/bin/docker run --rm octoblu/vctl backend  upsert --id c3po --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182 && \
+  /usr/bin/docker run --rm octoblu/vctl server   upsert --id c3po-%i --backend c3po --url http://${COREOS_PUBLIC_IPV4}:58637 --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182 && \
+  /usr/bin/docker run --rm octoblu/vctl frontend upsert --id c3po --backend c3po --route 'Host(\"c3po.royvandewater.com\")' --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182"
+ExecStop=/bin/sh -c "/usr/bin/echo 'Removing server from vulcand' && \
+  /usr/bin/docker run --rm octoblu/vctl server rm --id c3po-%i --vulcan http://$(ifconfig docker0 | grep 'inet ' | awk '{print $2}'):8182"
+
+[X-Fleet]
+X-ConditionMachineOf=c3po@%i.service

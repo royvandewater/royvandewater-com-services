@@ -15,4 +15,4 @@ ExecStart=/usr/bin/docker run \
     royvandewater/c3po
 
 [X-fleet]
-X-Conflicts=c3po.service
+X-Conflicts=c3po@*.service
