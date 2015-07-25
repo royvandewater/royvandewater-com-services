@@ -1,6 +1,8 @@
 [Unit]
 Description=Vulcand
+Wants=network-online.target
 Wants=docker.service
+After=docker.service
 
 [Service]
 TimeoutStartSec=0

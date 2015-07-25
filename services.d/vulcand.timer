@@ -1,0 +1,14 @@
+[Unit]
+Description=Run vulcand on every machine
+Wants=network-online.target
+Wants=docker.service
+After=docker.service
+
+[Timer]
+OnStartupSec=0 seconds
+
+[Install]
+WantedBy=timers.target
+
+[X-Fleet]
+Global=true
