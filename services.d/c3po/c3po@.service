@@ -1,6 +1,7 @@
 [Unit]
 Description=C3PO Group.me Bot
-Requires=docker.service
+Wants=vulcand.service
+After=vulcand.service
 
 [Service]
 Restart=always

@@ -1,7 +1,7 @@
 [Unit]
 Description=Register for c3po
-BindsTo=c3po.service
-After=c3po.service
+BindsTo=c3po@%i.service
+After=c3po@%i.service
 
 [Service]
 EnvironmentFile=/etc/environment
